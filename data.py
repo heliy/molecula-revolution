@@ -85,5 +85,5 @@ def snps_samples(f=filename2):
     snps = []
     for line in open(f,"r").read().replace("|","").splitlines():
         cons = line.split("\t")
-        snps.append([cons[2],cons[5:]])
+        snps.append(cons[2:])
     return snps

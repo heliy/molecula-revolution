@@ -36,22 +36,39 @@ def sets_group():
 def snp_groups(snps, groups):
     """
     样本分类
-    返回[[snp-rs,group-1,group-2,group-3],]
+    返回{snp-rs:
+            {"bases":[allele-one,allele-two],
+             "group":[group-1,group-2,group-3],},
+        }
     """
-    formats = []
-    snps = snps_samples()
-    for [snp, samples] in snps:
-        snp_cons = [snp]
+    formats = {}
+    for cons in snps:
+        snp = {}
+        snp["bases"] = cons[1:3]
+        snp["group"] = []
+        samples = cons[3:]
         for group in groups:
-            snp_cons.append("".join([samples[index] for index in groups[group]]))
-        formats.append(snp_cons)
+            snp["group"].append("".join(
+                [samples[index] for index in groups[group]]))
+        formats[cons[0]]=snp
     return formats
+
+def fix_poly(formats):
+    fix = []
+    poly = []
+    for snp in formats:
+        if sum([ len(set(locs)) for locs in formats[snp]["group"]]) == 3:
+            fix.append(snp)
+        else:
+            poly.append(snp)
+    return [fix, poly]
+        
 
 def run():
     snps = snps_samples()
     groups = sets_group()
     formats = snp_groups(snps, groups)
-    return formats
-        
+    [fix, poly] = fix_poly(formats)
+    return fix,poly
 
 
