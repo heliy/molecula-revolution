@@ -6,6 +6,8 @@
 
 filename1="data/1-data"
 filename2="data/2-data"
+head_file = "data/3-head"
+info_file = "data/3-info"
 
 keys=['00','01','10','11']
 
@@ -61,4 +63,27 @@ def get_haplo(f=filename2):
         for loc in range(total_len):
             haplos[loc] += locs[loc]
     return [snps,haplos]
-        
+
+def sample_infos(head_file=head_file,info_file=info_file):
+    """
+    提取样本编号和分类信息
+    """
+    heads = open(head_file, "r").read().splitlines()[0].split("\t")
+    infos = {}
+    for line in open(info_file, "r").read().splitlines():
+        cons = line.split("\t")
+        if len(cons) < 3:
+            continue
+        infos[cons[0]]=cons[2]
+    return [heads, infos]
+
+def snps_samples(f=filename2):
+    """
+    提取每行snp的位点
+    样本之间分割
+    """
+    snps = []
+    for line in open(f,"r").read().replace("|","").splitlines():
+        cons = line.split("\t")
+        snps.append([cons[2],cons[5:]])
+    return snps

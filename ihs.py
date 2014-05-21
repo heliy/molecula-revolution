@@ -80,13 +80,11 @@ def ehh(haplos,loc):
     ances_deno = float(c2(len(ancestral_haplos[0])))
     derived_haplos = [core_haplos[1][:]]   # 衍生等位最初分类
     deriv_deno = float(c2(len(derived_haplos[0])))
-    up_ancestral,down_ancestral,up_derived,down_derived = [],[],[],[]
+    up_ancestral,down_ancestral,up_derived,down_derived = [1.0]*4
     ehh_marks(up_ancestral, haplos, ancestral_haplos, loc-1, ances_deno, False)
     ehh_marks(up_derived, haplos, derived_haplos, loc-1, deriv_deno, False)
     ehh_marks(down_ancestral, haplos, ancestral_haplos, loc+1, ances_deno, True)
     ehh_marks(down_derived, haplos, derived_haplos, loc+1, deriv_deno, True)
-    if loc==0:
-        print down_ancestral
     return [up_ancestral,down_ancestral,up_derived,down_derived]    
 
 """
